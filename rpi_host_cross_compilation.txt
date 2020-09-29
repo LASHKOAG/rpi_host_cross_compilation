@@ -1,0 +1,277 @@
+Qt for Raspberry Pi - Qt 5.14.2 cross compilation for Raspberry Pi 4 model B - Run Qt on Raspberry
+
+https://www.youtube.com/watch?v=TmtN3Rmx9Rk
+
+
+
+
+sudo ip addr add 192.168.20.10/255.255.0.0 broadcast 192.168.20.255 dev enp6s0
+
+ssh-keygen -f "/home/oztm/.ssh/known_hosts" -R "192.168.20.24"
+
+
+------------------Raspberry Pi------------------------------
+
+1.sudo nano /etc/apt/sources.list
+
+delete #
+
+2.sudo apt update
+
+3.sudo apt full-upgrade
+
+4. sudo reboot
+
+5.sudo rpi-update
+
+6. cat /boot/.firmware_revision
+
+7. ls /opt/vc/lib/
+	to check:
+	libGLESv2.so
+
+8.sudo apt-get build-dep qt5-qmake
+
+9. sudo apt-get build-dep libqt5webengine-data
+
+10. sudo apt-get install libboost1.58-all-dev libudev-dev libinput-dev libts-dev libmtdev-dev libjpeg-dev libfontconfig1-dev
+
+11. sudo apt-get install libssl-dev libdbus-1-dev libglib2.0-dev libxkbcommon-dev libegl1-mesa-dev libgbm-dev libgles2-mesa-dev mesa-common-dev
+
+12. sudo apt-get install libasound2-dev libpulse-dev gstreamer1.0-omx libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-alsa
+
+13. sudo apt-get install libvpx-dev libsrtp0-dev libsnappy-dev libnss3-dev
+
+14. sudo apt-get install "^libxcb.*"
+
+15. sudo apt-get install libfreetype6-dev libicu-dev libsqlite3-dev libxslt1-dev libavcodec-dev libavformat-dev libswscale-dev
+
+16. sudo apt-get install libgstreamer0.10-dev gstreamer-tools libraspberrypi-dev libx11-dev libglib2.0-dev
+
+17. sudo apt-get install freetds-dev libsqlite0-dev libpq-dev libiodbc2-dev firebird-dev libjpeg9-dev libgst-dev libxext-dev libxcb1 libxcb1-dev libx11-xcb1
+
+18. sudo apt-get install libxcb-sync1 libxcb-sync-dev libxcb-render-util0 libxcb-render-util0-dev libxcb-xfixes0-dev libxrender-dev libxcb-shape0-dev libxcb-randr0-dev
+
+19. sudo apt-get install libxcb-glx0-dev libxi-dev libdrm-dev libssl-dev libxcb-xinerama0 libxcb-xinerama0-dev
+
+20. sudo apt-get install libatspi-dev libssl-dev libxcursor-dev libxcomposite-dev libxdamage-dev libfontconfig1-dev
+
+21. sudo apt-get install libatspi-dev libssl-dev libxcursor-dev libxcomposite-dev libxdamage-dev libfontconfig1-dev
+
+22. sudo apt-get install libxss-dev libxtst-dev libpci-dev libcap-dev libsrtp0-dev libxrandr-dev libnss3-dev libdirectfb-dev libaudio-dev
+
+23. sudo mkdir /usr/local/qt5pi
+
+24. sudo chown pi:pi /usr/local/qt5pi/
+
+25. ls -l /usr/local/qt5pi/
+
+----------------HOST--------------------------
+
+1. sudo apt-get update
+
+2. sudo apt-get upgrade
+
+3. ping 192.168.20.24
+
+4. sudo bash
+
+5. apt-get install gcc git bison python gperf pkg-config
+
+6. apt install libclang-dev
+
+7. mkdir /opt/qt5pi/
+
+8. chown oztm:oztm /opt/qt5pi
+
+9. cd /opt/qt5pi/
+
+10. -> web browser
+	->releases linaro
+		->https://releases.linaro.org/components/toolchain/binaries/latest-7/
+			-> https://releases.linaro.org/components/toolchain/binaries/latest-7/arm-linux-gnueabihf/
+				-> gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz	05-Dec-2019 10:02	104.6M
+					right button of mouse -> copy link location
+11. wget https://releases.linaro.org/components/toolchain/binaries/latest-7/arm-linux-gnueabihf/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz
+
+12. tar xf gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz
+
+13.  ls gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf
+
+#14. ls gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/
+
+15. export PATH=$PATH:/opt/qt5pi/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin
+
+16. nano ~/.bashrc
+	-> export PATH=$PATH:/opt/qt5pi/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin 
+
+17. -> web browser
+	->download qt official release
+	-> https://download.qt.io/official_releases/qt/5.14/5.14.2/single/
+	->wget https://download.qt.io/official_releases/qt/5.14/5.14.2/single/qt-everywhere-src-5.14.2.tar.xz. 
+
+18. tar xf qt-everywhere-src-5.14.2.tar.xz
+
+19. rsync -avz pi@192.168.20.24:/lib sysroot
+
+20. rsync -avz pi@192.168.20.24:/usr/include sysroot/usr
+
+21. rsync -avz pi@192.168.20.24:/lib sysroot
+
+22. rsync -avz pi@192.168.20.24:/usr/lib sysroot/usr
+
+23. rsync -avz pi@192.168.20.24:/opt/vc sysroot/opt
+
+24. mv sysroot/usr/lib/arm-linux-gnueabihf/libEGL.so.1.1.0 sysroot/usr/lib/arm-linux-gnueabihf/libEGL.so.1.1.0_backup
+
+25. mv sysroot/usr/lib/arm-linux-gnueabihf/libGLESv2.so.2.1.0 sysroot/usr/lib/arm-linux-gnueabihf/libGLESv2.so.2.1.0_backup
+
+26. ln -s sysroot/opt/vc/lib/libEGL.so sysroot/usr/lib/arm-linux-gnueabihf/libEGL.so.1.1.0
+
+27. ln -s sysroot/opt/vc/lib/libGLESv2.so sysroot/usr/lib/arm-linux-gnueabihf/libGLESv2.so.2.1.0
+
+28. ln -s sysroot/opt/vc/lib/libEGL.so sysroot/opt/vc/lib/libEGL.so.1
+
+29. ln -s sysroot/opt/vc/lib/libGLESv2.so sysroot/opt/vc/lib/libGLESv2.so.2
+
+30. wget https://raw.githubusercontent.com/riscv/riscv-poky/master/scripts/sysroot-relativelinks.py
+
+31. chmod +x sysroot-relativelinks.py
+ 
+32. ./sysroot-relativelinks.py sysroot
+
+19. rsync -avz pi@192.168.20.24:/lib sysroot
+
+20. rsync -avz pi@192.168.20.24:/usr/include sysroot/usr
+
+21. rsync -avz pi@192.168.20.24:/lib sysroot
+
+22. rsync -avz pi@192.168.20.24:/usr/lib sysroot/usr
+
+23. rsync -avz pi@192.168.20.24:/opt/vc sysroot/opt
+
+32. ./sysroot-relativelinks.py sysroot
+
+33. mkdir qt5build
+
+34. cd qt5build/
+
+35. ../qt-everywhere-src-5.14.2/configure -opengl es2 -device linux-rasp-pi4-v3d-g++ -device-option CROSS_COMPILE=/opt/qt5pi/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf- -sysroot /opt/qt5pi/sysroot -prefix /usr/local/qt5pi -opensource -confirm-license -skip qtscript -skip qtwayland -skip qtdatavis3d -nomake examples -make libs -pkg-config -no-use-gold-linker -v
+
+
+#apt install build-essential
+
+36. make -j8
+
+
+37. make install
+
+38. cd /opt/qt5pi/
+
+on pi:
+sudo chmod -R 777 /usr/local/
+
+
+39. rsync -avz sysroot/usr/local/qt5pi pi@192.168.20.24:/usr/local/
+
+-----------------------------------------------------------------------------
+
+		test
+
+40. sudo apt install qtcreator
+
+41. sudo qtcreator
+
+42. tools -> options -> build and run -> kits
+	add -> name: RaspiQt
+	Device type: Generic Linux Device
+
+	tab: Qt Versions
+	-> manual -> add -> /opt/qt5pi/sysroot/usr/local/qt5pi/bin/qmake
+
+	tab: Compilers
+	->add -> GCC -> C
+	change name:
+	Name: GCC_rasp -> Browse:
+	/opt/qt5pi/gcc-linaro-7..._arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc
+
+	c++ -> add -> C++
+	Name: G++_rasp
+	Browse:
+	/opt/qt5pi/gcc-linaro-7..._arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc++
+
+	back to tab "Kits":
+	"Compiler" C: change from "GCC (C, x86 64bit in /usr/bin)" to "GCC_rasp"
+
+	C++ -> G++_rasp
+
+43. tab "Devices" -> add -> Generic Linux Device
+	"The name to identify..... :" Raspberry
+	"The device's host name or IP address:" 192.168.20.24
+	"The username to log into the device:" pi
+
+44. create project in QtCreator
+
+
+
+qtcreator: ->projects -> Run Settings
+"Remote Directory": /opt/RaspberyDemoQml/bin
+=> create folder in Rpi and give permision: /opt/RaspberyDemoQml/bin
+
+or 
+
+scp RaspberryDemoQml pi@192.168.20.24:/home/pi
+
+sudo chmod -R 777 RaspberryDemoQml
+
+run on Rpi: ./RaspberryDemoQml
+
+====
+change address remote device in .pro
+
+.... else: unix:!android: target.path = /opt/$${TARGET}/bin    <-------here change remote device
+
+for example
+else: unix:!android: target.path = /home/pi/$${TARGET}
+--------------------------------------------------------------
+
+oztm@oztm:~/Rpi_demo/build-RaspberryDemoQml-RaspiQt-Debug$ file RaspberryDemoQml 
+
+RaspberryDemoQml: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 3.2.0, BuildID[sha1]=52ea5871bf379cf3480a95ace753f59cb2fed9e1, with debug_info, not stripped
+
+-----------------------------------------------
+
+for run programm with Host's
+
+ssh pi@192.168.20.24
+
+for example: bin was located in /home/pi/ and it name is RaspberryDemoQml
+
+./RaspberryDemoQml  -> you get mistakes
+
+you should write in console:
+export QT_QPA_PLATFORMTHEME=qt5ct
+export DISPLAY=:0.0
+export XAUTHORITY=/home/pi/.Xauthority
+export XDG_SESSION_TYPE=x11
+./RaspberryDemoQml 
+
+---------------------------------------------
+
+else: unix:!android: target.path = /opt/$${TARGET}/bin    <-------here change remote device
+
+-----------------------------------------
+
+you could write "export" in  Projects -> Run -> Run Environment -> details
+->add
+in columns:
+	Variable: 		Value:
+	QT_QPA_PLATFORMTHEME	qt5ct
+	DISPLAY   		:0.0
+	XAUTHORITY		/home/pi/.Xauthority
+	XDG_SESSION_TYPE	x11
+	...
+	...
+
+
+	
